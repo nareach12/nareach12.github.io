@@ -1,1 +1,250 @@
-hello world
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Sofiane Bouhadi</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #0a0a2e, #000000);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Effet scanlines */
+        .scanlines {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.3) 0px,
+                rgba(0, 0, 0, 0.3) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Conteneur principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* En-tête style arcade */
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px #00ff88;
+            position: relative;
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #00ff88;
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        /* Barre de vie style RPG */
+        .health-bar {
+            width: 200px;
+            height: 20px;
+            background: #333;
+            border: 3px solid #fff;
+            margin: 1rem auto;
+            position: relative;
+        }
+
+        .health-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff4500);
+            transition: width 0.3s ease;
+        }
+
+        /* Cartes interactives */
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid #00a3ff;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #00ff88;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Boutons style interface de jeu */
+        .btn-gamer {
+            padding: 1rem 2rem;
+            margin: 1rem;
+            background: #1a1a2e;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            font-family: 'Press Start 2P', cursive;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .btn-gamer:hover {
+            background: #00ff88;
+            color: #000;
+            box-shadow: 0 0 20px #00ff88;
+            transform: translateY(-2px);
+        }
+
+        /* Décorations interactives */
+        .pixel-sprites {
+            position: fixed;
+            width: 64px;
+            height: 64px;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////9CQqttAAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAA2lJREFUWMPtlu1Og0AQhWcXWkqhlBZq1RitMSb+/x9zwSsttKW7FOLFmD2JZ87MPjOzu0tVVZ2rYz8GqX8B4Bq4A1LgHngEHoAJMAGegBfgFZgCc+AD+AQWwBJYA7/AFtgB+6o6c4D7MwcYVgBwBQyBW6AP9IBuEaDdAq7Kvq6BdhGg3QKuyn6rCNDuBm7KvlkEaHcDN2XfKAK0u4Gbsm8UAdrdwE3Z14sA7W7gpuzVIkC7G7gpe6UI0O4GbspeLgK0u4GbspeKAO1u4KbsxSJAu0sBfFqWpQ5sX3oB3oGX0v4H8FbafwU+gI/S/ifwCXyV9r+Ab+C7tP8N/AC/pf0fYAP8lfY3wA7Yl/Yz4AD8JwB3wB3wADwCj8ATMAEmwBPwArwCU2AOfABfwAJYAmtgDWzOHOABuC8CPJ454B9fheuK7HmC/QAAAABJRU5ErkJggg==');
+            image-rendering: pixelated;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Animation de sprites */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Effet glitch */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Console virtuelle */
+        .console {
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #00ff88;
+            padding: 1rem;
+            margin: 2rem 0;
+            font-family: monospace;
+            text-shadow: 0 0 5px #00ff88;
+        }
+
+        /* Progress bar style RPG */
+        .xp-bar {
+            height: 10px;
+            background: #1a1a1a;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .xp-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00a3ff);
+            width: 75%;
+            transition: width 0.5s ease;
+        }
+
+        /* Menu style jeu vidéo */
+        .game-menu {
+            display: grid;
+            gap: 1rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ff88;
+        }
+
+        .menu-item {
+            padding: 1rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="pixel-sprites" style="top:20%;left:5%"></div>
+    <div class="pixel-sprites" style="top:70%;right:5%"></div>
+
+    <div class="container">
+        <header>
+            <h1>>_ GameDev</h1>
+            <div class="health-bar">
+                <div class="health-fill" style="width: 80%"></div>
+            </div>
+        </header>
+
+        <section class="game-menu">
+            <a href="C:\Users\Sortn\OneDrive\Bureau\Portfolio\Mesprojet.html"><div class="menu-item">🎮 Mes Projets</div></a>
+            <a href ="Mescom.html"><div class="menu-item">⚔️ Compétences</div></a>
+            <div class="menu-item">🏆 Réalisations</div>
+            <div class="menu-item">📞 Contact</div>
+        </section>
+
+        <div class="console">
+            <p>> Chargement du profil... [OK]</p>
+            <p>> Initialisation des compétences... [OK]</p>
+            <p>> Système prêt !</p>
+        </div>
+
+        <div class="xp-bar">
+            <div class="xp-progress"></div>
+        </div>
+
+        <button class="btn-gamer">Start Game</button>
+        <button class="btn-gamer">Load Save</button>
+        <button class="btn-gamer">Options</button>
+    </div>
+</body>
+</html>

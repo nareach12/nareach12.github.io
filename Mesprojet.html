@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Projets - Portfolio Gamer</title>
+    <style>
+        /* Styles de base */
+        body {
+            background: radial-gradient(circle at center, #0a0a2e 0%, #000 100%);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+        }
+
+        .scanlines {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, 
+                rgba(0, 0, 0, 0.3) 0px, 
+                rgba(0, 0, 0, 0.3) 2px, 
+                transparent 2px, 
+                transparent 4px);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: #00ff88;
+            text-shadow: 0 0 15px #00ff88;
+            margin-bottom: 2rem;
+            border-left: 5px solid #ff00ff;
+            padding-left: 1rem;
+        }
+
+        /* Grille de projets */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Carte de projet */
+        .project-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff88;
+            padding: 1.5rem;
+            position: relative;
+            transition: transform 0.3s ease;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .project-header {
+            border-bottom: 2px solid #ff00ff;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-family: 'Press Start 2P', cursive;
+            color: #ff00ff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #1a1a2e;
+            border: 1px solid #00ff88;
+            font-size: 0.8rem;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: #1a1a2e;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%);
+            transition: filter 0.3s ease;
+        }
+
+        .project-card:hover .project-image img {
+            filter: grayscale(0%);
+        }
+
+        .project-tech {
+            margin-top: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-badge {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 3px;
+        }
+
+        .progress-container {
+            background: #1a1a2e;
+            height: 10px;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff00ff, #00ff88);
+            width: 75%;
+            transition: width 1s ease;
+        }
+
+        .project-updates {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px dashed #00ff88;
+        }
+
+        .update-item {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid #ff00ff;
+        }
+
+        /* Effet VHS */
+        .vhs-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.05) 0px,
+                rgba(255, 255, 255, 0.05) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 998;
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="vhs-overlay"></div>
+
+    <div class="container">
+        <h2>🕹️ Mes Projets</h2>
+
+        <div class="projects-grid">
+            <!-- Template de projet -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-title">[NOM DU PROJET]</div>
+                    <span class="project-status">🟢 EN DEVELOPPEMENT</span>
+                </div>
+                
+                <div class="project-image">
+                    <!-- Remplacer par votre image -->
+                    <img src="placeholder.jpg" alt="Preview du projet">
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 75%"></div>
+                </div>
+
+                <div class="project-tech">
+                    <span class="tech-badge">Unity</span>
+                    <span class="tech-badge">C#</span>
+                    <span class="tech-badge">HLSL</span>
+                </div>
+
+                <div class="project-updates">
+                    <div class="update-item">✅ Système de combat implémenté</div>
+                    <div class="update-item">🛠️ Optimisation en cours</div>
+                    <div class="update-item">🎨 UI à finaliser</div>
+                </div>
+            </div>
+
+            <!-- Copier-coller ce bloc pour ajouter d'autres projets -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-title">[NOM DU PROJET]</div>
+                    <span class="project-status">🟡 EN PAUSE</span>
+                </div>
+                
+                <div class="project-image">
+                    <img src="placeholder.jpg" alt="Preview du projet">
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 30%"></div>
+                </div>
+
+                <div class="project-tech">
+                    <span class="tech-badge">Unreal Engine</span>
+                    <span class="tech-badge">C++</span>
+                    <span class="tech-badge">Blender</span>
+                </div>
+
+                <div class="project-updates">
+                    <div class="update-item">⚠️ Problème de physique détecté</div>
+                    <div class="update-item">🗺️ Level design en cours</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Dev Skills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --hologram-blue: #00D1FF;
+            --cyber-purple: #7D4FFF;
+            --interface-dark: #0F0F15;
+            --neon-glow: rgba(0, 209, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Chakra Petch', sans-serif;
+            background: linear-gradient(45deg, #0A0A1A, #00101A);
+            color: white;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 80px;
+            background: linear-gradient(45deg, var(--hologram-blue), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: titleReveal 1s ease-out forwards;
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .skill-item {
+            background: rgba(15, 15, 21, 0.9);
+            border: 1px solid var(--hologram-blue);
+            padding: 25px;
+            border-radius: 8px;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                        box-shadow 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 209, 255, 0.1),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .skill-item:hover::before {
+            left: 100%;
+        }
+
+        .skill-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px) rotateZ(1deg);
+            box-shadow: 0 10px 30px var(--neon-glow);
+        }
+
+        .skill-title {
+            color: var(--hologram-blue);
+            margin: 0 0 15px 0;
+            font-size: 1.4em;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .skill-title::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--cyber-purple);
+            transform: scale(0.8);
+            transition: 0.3s ease;
+        }
+
+        .skill-item:hover .skill-title::before {
+            transform: translateX(5px) scale(1);
+            color: var(--hologram-blue);
+        }
+
+        .skill-description {
+            color: rgba(255,255,255,0.85);
+            margin: 0;
+            line-height: 1.6;
+            font-size: 0.95em;
+            transform: translateX(0);
+            transition: 0.3s ease;
+        }
+
+        .skill-item:hover .skill-description {
+            transform: translateX(10px);
+        }
+
+        /* Animations */
+        @keyframes titleReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Effet de particules flottantes */
+        .floating-dots {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-dot {
+            position: absolute;
+            background: radial-gradient(var(--hologram-blue), transparent 70%);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 12s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(0.8); }
+            50% { transform: translateY(-80vh) scale(1.2); }
+            100% { transform: translateY(-160vh) scale(0.5); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-dots"></div>
+
+    <div class="container">
+        <h1>What i can do </h1>
+        
+        <div class="skills-container">
+            <!-- ▼▼▼ Coller les nouvelles compétences ici ▼▼▼ -->
+            
+            <div class="skill-item">
+                <h3 class="skill-title">Game Design</h3>
+                <p class="skill-description">Prototypage rapide • Mécaniques cœur • Documentation GDD</p>
+            </div>
+
+            <div class="skill-item">
+                <h3 class="skill-title">Level Design</h3>
+                <p class="skill-description">Flux joueur dynamique • Architecture 3D • Tests playthrough</p>
+            </div>
+
+            <div class="skill-item">
+                <h3 class="skill-title">C++/C#</h3>
+                <p class="skill-description">Systèmes gameplay • Outils développeurs • Optimisation</p>
+            </div>
+
+            <div class="skill-item">
+                <h3 class="skill-title">Unreal Engine</h3>
+                <p class="skill-description">Blueprints • Niagara • Animation • Multiplayer</p>
+            </div>
+
+            <!-- ▲▲▲ Coller les nouvelles compétences ici ▲▲▲ -->
+        </div>
+    </div>
+
+    <script>
+        // Animation au scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.skill-item').forEach((item) => {
+            observer.observe(item);
+        });
+
+        // Génération de particules
+        const dotsContainer = document.querySelector('.floating-dots');
+        for (let i = 0; i < 30; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'floating-dot';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.top = Math.random() * 100 + '%';
+            dot.style.width = Math.random() * 4 + 2 + 'px';
+            dot.style.height = dot.style.width;
+            dot.style.animationDelay = Math.random() * 5 + 's';
+            dotsContainer.appendChild(dot);
+        }
+    </script>
+</body>
+</html>
