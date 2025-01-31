@@ -4,230 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Dev Skills</title>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* === VARIABLES === */
         :root {
-            --hologram-blue: #00D1FF;
-            --cyber-purple: #7D4FFF;
-            --interface-dark: #0F0F15;
-            --neon-glow: rgba(0, 209, 255, 0.1);
+            --neon-green: #00ff88;
+            --neon-blue: #00a3ff;
+            --bg-dark: #0a0a2e;
+            --interface-dark: rgba(0, 0, 0, 0.8);
+            --glow-green: 0 0 20px #00ff88;
+            --glow-blue: 0 0 20px #00a3ff;
+        }
+
+        /* === BASE STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Chakra Petch', sans-serif;
-            background: linear-gradient(45deg, #0A0A1A, #00101A);
+            font-family: 'Press Start 2P', cursive;
+            background: radial-gradient(circle at center, var(--bg-dark), #000000);
             color: white;
             min-height: 100vh;
-            margin: 0;
             overflow-x: hidden;
+            position: relative;
         }
 
+        /* === SCANLINES EFFECT === */
+        .scanlines {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.3) 0px,
+                rgba(0, 0, 0, 0.3) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* === MAIN CONTAINER === */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 20px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 80px;
-            background: linear-gradient(45deg, var(--hologram-blue), var(--cyber-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
             opacity: 0;
-            transform: translateY(30px);
-            animation: titleReveal 1s ease-out forwards;
+            animation: containerReveal 1s ease-out forwards;
+            animation-delay: 3s;
         }
 
-        .skills-container {
+        /* === TITLE ANIMATION === */
+        .main-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 4rem 0;
+            text-shadow: var(--glow-green);
+            padding: 1.5rem;
+            border: 3px solid var(--neon-green);
+            box-shadow: var(--glow-green);
+            background: var(--interface-dark);
+            transform: scale(0.5) translateY(100vh);
+            opacity: 0;
+            animation: titleEntry 2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation-delay: 2.5s;
+        }
+
+        /* === SKILLS GRID === */
+        .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            padding: 20px;
+            gap: 2rem;
+            padding: 1rem;
         }
 
-        .skill-item {
-            background: rgba(15, 15, 21, 0.9);
-            border: 1px solid var(--hologram-blue);
-            padding: 25px;
-            border-radius: 8px;
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
-                        box-shadow 0.4s ease;
+        .skill-card {
+            background: var(--interface-dark);
+            border: 2px solid var(--neon-green);
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
-            backdrop-filter: blur(8px);
-            position: relative;
-            overflow: hidden;
+            animation: cardReveal 0.5s ease-out forwards;
         }
 
-        .skill-item::before {
+        .skill-card:nth-child(1) { animation-delay: 3.2s; }
+        .skill-card:nth-child(2) { animation-delay: 3.4s; }
+        .skill-card:nth-child(3) { animation-delay: 3.6s; }
+        .skill-card:nth-child(4) { animation-delay: 3.8s; }
+
+        .skill-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 209, 255, 0.1),
-                transparent
-            );
-            transition: 0.5s;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid var(--neon-blue);
+            opacity: 0;
+            transition: 0.3s;
         }
 
-        .skill-item:hover::before {
-            left: 100%;
+        .skill-card:hover {
+            transform: scale(1.05) rotateZ(1deg);
+            box-shadow: var(--glow-green);
         }
 
-        .skill-item.visible {
+        .skill-card:hover::before {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        .skill-item:hover {
-            transform: translateY(-5px) rotateZ(1deg);
-            box-shadow: 0 10px 30px var(--neon-glow);
-        }
-
+        /* === SKILL CONTENT === */
         .skill-title {
-            color: var(--hologram-blue);
-            margin: 0 0 15px 0;
-            font-size: 1.4em;
+            color: var(--neon-green);
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
             position: relative;
-            padding-left: 30px;
+            padding-left: 1.5rem;
         }
 
         .skill-title::before {
-            content: '▶';
+            content: '>';
             position: absolute;
             left: 0;
-            color: var(--cyber-purple);
-            transform: scale(0.8);
+            color: var(--neon-blue);
             transition: 0.3s ease;
         }
 
-        .skill-item:hover .skill-title::before {
-            transform: translateX(5px) scale(1);
-            color: var(--hologram-blue);
+        .skill-card:hover .skill-title::before {
+            color: var(--neon-green);
+            transform: translateX(5px);
         }
 
-        .skill-description {
-            color: rgba(255,255,255,0.85);
-            margin: 0;
-            line-height: 1.6;
-            font-size: 0.95em;
-            transform: translateX(0);
-            transition: 0.3s ease;
+        .skill-content {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.5;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
         }
 
-        .skill-item:hover .skill-description {
-            transform: translateX(10px);
+        /* === ANIMATIONS === */
+        @keyframes titleEntry {
+            0% {
+                transform: scale(0.5) translateY(100vh);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.1) translateY(-20px);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
         }
 
-        /* Animations */
-        @keyframes titleReveal {
+        @keyframes cardReveal {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        /* Effet de particules flottantes */
-        .floating-dots {
+        @keyframes containerReveal {
+            to { opacity: 1; }
+        }
+
+        /* === LOADING SCREEN === */
+        .loading-screen {
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 1s ease;
         }
 
-        .floating-dot {
-            position: absolute;
-            background: radial-gradient(var(--hologram-blue), transparent 70%);
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: float 12s infinite linear;
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0) scale(0.8); }
-            50% { transform: translateY(-80vh) scale(1.2); }
-            100% { transform: translateY(-160vh) scale(0.5); }
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            transition: width 1.5s ease-in-out;
         }
 
-        /* Responsive */
+        /* === RESPONSIVE DESIGN === */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .skills-container {
-                grid-template-columns: 1fr;
-            }
+            .main-title { font-size: 1.5rem; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .skill-card { padding: 1rem; }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="floating-dots"></div>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <p style="color: var(--neon-green);">LOADING SKILLS DATABASE...</p>
+    </div>
 
+    <!-- Visual Effects -->
+    <div class="scanlines"></div>
+
+    <!-- Main Content -->
     <div class="container">
-        <h1>What i can do </h1>
+        <h1 class="main-title">>> SKILLS.EXE</h1>
         
-        <div class="skills-container">
-            <!-- ▼▼▼ Coller les nouvelles compétences ici ▼▼▼ -->
-            
-            <div class="skill-item">
-                <h3 class="skill-title">Game Design</h3>
-                <p class="skill-description">Prototypage rapide • Mécaniques cœur • Documentation GDD</p>
+        <div class="skills-grid">
+            <!-- ▼▼▼ Add/Remove Skills Below ▼▼▼ -->
+            <div class="skill-card">
+                <h3 class="skill-title">GAME DESIGN</h3>
+                <p class="skill-content">Prototypage rapide • Mécaniques cœur • Documentation GDD</p>
             </div>
 
-            <div class="skill-item">
-                <h3 class="skill-title">Level Design</h3>
-                <p class="skill-description">Flux joueur dynamique • Architecture 3D • Tests playthrough</p>
+            <div class="skill-card">
+                <h3 class="skill-title">LEVEL DESIGN</h3>
+                <p class="skill-content">Flux joueur dynamique • Architecture 3D • Tests playthrough</p>
             </div>
 
-            <div class="skill-item">
+            <div class="skill-card">
                 <h3 class="skill-title">C++/C#</h3>
-                <p class="skill-description">Systèmes gameplay • Outils développeurs • Optimisation</p>
+                <p class="skill-content">Systèmes gameplay • Outils développeurs • Optimisation</p>
             </div>
 
-            <div class="skill-item">
-                <h3 class="skill-title">Unreal Engine</h3>
-                <p class="skill-description">Blueprints • Niagara • Animation • Multiplayer</p>
+            <div class="skill-card">
+                <h3 class="skill-title">UNREAL ENGINE</h3>
+                <p class="skill-content">Blueprints • Niagara • Animation • Multiplayer</p>
             </div>
-
-            <!-- ▲▲▲ Coller les nouvelles compétences ici ▲▲▲ -->
+            <!-- ▲▲▲ Add/Remove Skills Above ▲▲▲ -->
         </div>
     </div>
 
     <script>
-        // Animation au scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        // Loading Simulation
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.querySelector('.loading-screen');
+            const progressBar = document.querySelector('.loading-progress');
+            
+            let progress = 0;
+            const loadInterval = setInterval(() => {
+                progress += Math.random() * 20;
+                if(progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadInterval);
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => loadingScreen.remove(), 1000);
                 }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.skill-item').forEach((item) => {
-            observer.observe(item);
+                progressBar.style.width = progress + '%';
+            }, 200);
         });
-
-        // Génération de particules
-        const dotsContainer = document.querySelector('.floating-dots');
-        for (let i = 0; i < 30; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'floating-dot';
-            dot.style.left = Math.random() * 100 + '%';
-            dot.style.top = Math.random() * 100 + '%';
-            dot.style.width = Math.random() * 4 + 2 + 'px';
-            dot.style.height = dot.style.width;
-            dot.style.animationDelay = Math.random() * 5 + 's';
-            dotsContainer.appendChild(dot);
-        }
     </script>
 </body>
 </html>
