@@ -1,246 +1,319 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Projets - Portfolio </title>
-    <style>
-        /* Styles de base */
-        body {
-            background: radial-gradient(circle at center, #0a0a2e 0%, #000 100%);
-            color: #fff;
-            font-family: 'Courier New', monospace;
-            min-height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Projets - Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    /* Animation de fade-in pour le body (après disparition du loader) */
+    body {
+      background: radial-gradient(circle at center, #0a0a2e 0%, #000 100%);
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+      animation-delay: 1s; /* Lancement après le loader */
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
 
-        .scanlines {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(0deg, 
-                rgba(0, 0, 0, 0.3) 0px, 
-                rgba(0, 0, 0, 0.3) 2px, 
-                transparent 2px, 
-                transparent 4px);
-            pointer-events: none;
-            z-index: 999;
-        }
+    /* Loader */
+    #loader {
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+    #loader.fade-out {
+      opacity: 0;
+    }
+    .spinner {
+      border: 8px solid #1a1a2e;
+      border-top: 8px solid #00ff88;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-        }
+    /* Scanlines et effet VHS */
+    .scanlines {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(0deg, 
+        rgba(0, 0, 0, 0.3) 0px, 
+        rgba(0, 0, 0, 0.3) 2px, 
+        transparent 2px, 
+        transparent 4px);
+      pointer-events: none;
+      z-index: 999;
+    }
+    .vhs-overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events: none;
+      z-index: 998;
+    }
 
-        h2 {
-            font-family: 'Press Start 2P', cursive;
-            color: #00ff88;
-            text-shadow: 0 0 15px #00ff88;
-            margin-bottom: 2rem;
-            border-left: 5px solid #ff00ff;
-            padding-left: 1rem;
-        }
+    /* Container principal avec animation d'entrée */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: contentFadeIn 1s forwards;
+      animation-delay: 1.2s;
+    }
+    @keyframes contentFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        /* Grille de projets */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
+    h2 {
+      font-family: 'Press Start 2P', cursive;
+      color: #00ff88;
+      text-shadow: 0 0 15px #00ff88;
+      margin-bottom: 2rem;
+      border-left: 5px solid #ff00ff;
+      padding-left: 1rem;
+    }
 
-        /* Carte de projet */
-        .project-card {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #00ff88;
-            padding: 1.5rem;
-            position: relative;
-            transition: transform 0.3s ease;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
+    /* Grille de projets */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-        }
+    /* Carte de projet */
+    .project-card {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ff88;
+      padding: 1.5rem;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: cardFadeIn 0.8s forwards;
+    }
+    /* Chaque carte peut avoir un délai différent pour un effet "staggered" */
+    @keyframes cardFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+    }
 
-        .project-header {
-            border-bottom: 2px solid #ff00ff;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-        }
+    .project-header {
+      border-bottom: 2px solid #ff00ff;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+    .project-title {
+      font-family: 'Press Start 2P', cursive;
+      color: #ff00ff;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .project-status {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #1a1a2e;
+      border: 1px solid #00ff88;
+      font-size: 0.8rem;
+    }
 
-        .project-title {
-            font-family: 'Press Start 2P', cursive;
-            color: #ff00ff;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
+    .project-image {
+      width: 100%;
+      height: 200px;
+      background: #1a1a2e;
+      margin: 1rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(80%);
+      transition: filter 0.3s ease;
+    }
+    .project-card:hover .project-image img {
+      filter: grayscale(0%);
+    }
 
-        .project-status {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            background: #1a1a2e;
-            border: 1px solid #00ff88;
-            font-size: 0.8rem;
-        }
+    .project-tech {
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .tech-badge {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid #00ff88;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.8rem;
+      border-radius: 3px;
+    }
 
-        .project-image {
-            width: 100%;
-            height: 200px;
-            background: #1a1a2e;
-            margin: 1rem 0;
-            position: relative;
-            overflow: hidden;
-        }
+    .progress-container {
+      background: #1a1a2e;
+      height: 10px;
+      margin: 1rem 0;
+      position: relative;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #ff00ff, #00ff88);
+      width: 75%;
+      transition: width 1s ease;
+    }
 
-        .project-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(80%);
-            transition: filter 0.3s ease;
-        }
+    .project-updates {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed #00ff88;
+    }
+    .update-item {
+      margin: 0.5rem 0;
+      padding-left: 1rem;
+      border-left: 2px solid #ff00ff;
+    }
 
-        .project-card:hover .project-image img {
-            filter: grayscale(0%);
-        }
-
-        .project-tech {
-            margin-top: auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .tech-badge {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid #00ff88;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.8rem;
-            border-radius: 3px;
-        }
-
-        .progress-container {
-            background: #1a1a2e;
-            height: 10px;
-            margin: 1rem 0;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff00ff, #00ff88);
-            width: 75%;
-            transition: width 1s ease;
-        }
-
-        .project-updates {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px dashed #00ff88;
-        }
-
-        .update-item {
-            margin: 0.5rem 0;
-            padding-left: 1rem;
-            border-left: 2px solid #ff00ff;
-        }
-
-        /* Effet VHS */
-        .vhs-overlay {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(255, 255, 255, 0.05) 0px,
-                rgba(255, 255, 255, 0.05) 2px,
-                transparent 2px,
-                transparent 4px
-            );
-            pointer-events: none;
-            z-index: 998;
-        }
-
-        @media (max-width: 768px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    @media (max-width: 768px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="scanlines"></div>
-    <div class="vhs-overlay"></div>
+  <!-- Écran de chargement -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
 
-    <div class="container">
-        <h2>🕹️ Mes Projets</h2>
+  <div class="scanlines"></div>
+  <div class="vhs-overlay"></div>
 
-        <div class="projects-grid">
-            <!-- Template de projet -->
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-title">Horror game</div>
-                    <span class="project-status">🟢 EN DEVELOPPEMENT</span>
-                </div>
-                
-                <div class="project-image">
-                    <!-- Remplacer par votre image -->
-                    <img src="placeholder.jpg" alt="Preview du projet">
-                </div>
-
-                <div class="progress-container">
-                    <div class="progress-bar" style="width: 55%"></div>
-                </div>
-
-                <div class="project-tech">
-                    <span class="tech-badge">Unreal Engine 5</span>
-                    <span class="tech-badge">C++</span>
-                    <span class="tech-badge">Blue Print</span>
-                </div>
-
-                <div class="project-updates">
-                    <div class="update-item">✅ IA des enemies</div>
-                    <div class="update-item">🛠️ Optimisation en cours</div>
-                    <div class="update-item">🎨 UI en cours</div>
-                    <div class="update-item">🏠 Map en cours de conception</div>
-                </div>
-            </div>
-
-            <!-- Copier-coller ce bloc pour ajouter d'autres projets -->
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-title">Femto [RPG]</div>
-                    <span class="project-status">🟡 EN PAUSE</span>
-                </div>
-                
-                <div class="project-image">
-                    <img src="placeholder.jpg" alt="Preview du projet">
-                </div>
-
-                <div class="progress-container">
-                    <div class="progress-bar" style="width: 70%"></div>
-                </div>
-
-                <div class="project-tech">
-                    <span class="tech-badge">Unreal Engine</span>
-                    <span class="tech-badge">C++</span>
-                    <span class="tech-badge">Blender</span>
-                </div>
-
-                <div class="project-updates">
-                    <div class="update-item">⚠️ GamePlay issues</div>
-                    <div class="update-item">🗺️ Level design en cours</div>
-                    <div class="update-item">☠️ System de combat en cours</div>
-                </div>
-            </div>
+  <div class="container">
+    <h2>🕹️ Mes Projets</h2>
+    <div class="projects-grid">
+      <!-- Projet 1 -->
+      <div class="project-card" style="animation-delay: 1.4s;">
+        <div class="project-header">
+          <div class="project-title">Horror game</div>
+          <span class="project-status">🟢 EN DEVELOPPEMENT</span>
         </div>
+        <div class="project-image">
+          <!-- Remplacer par votre image -->
+          <img src="placeholder.jpg" alt="Preview du projet">
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: 55%"></div>
+        </div>
+        <div class="project-tech">
+          <span class="tech-badge">Unreal Engine 5</span>
+          <span class="tech-badge">C++</span>
+          <span class="tech-badge">Blue Print</span>
+        </div>
+        <div class="project-updates">
+          <div class="update-item">✅ IA des enemies</div>
+          <div class="update-item">🛠️ Optimisation en cours</div>
+          <div class="update-item">🎨 UI en cours</div>
+          <div class="update-item">🏠 Map en cours de conception</div>
+        </div>
+      </div>
+      
+      <!-- Projet 2 -->
+      <div class="project-card" style="animation-delay: 1.6s;">
+        <div class="project-header">
+          <div class="project-title">Femto [RPG]</div>
+          <span class="project-status">🟡 EN PAUSE</span>
+        </div>
+        <div class="project-image">
+          <img src="placeholder.jpg" alt="Preview du projet">
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: 70%"></div>
+        </div>
+        <div class="project-tech">
+          <span class="tech-badge">Unreal Engine</span>
+          <span class="tech-badge">C++</span>
+          <span class="tech-badge">Blender</span>
+          <span class="tech-badge">Blue Print</span>
+          <span class="tech-badge">FAB</span>
+        </div>
+        <div class="project-updates">
+          <div class="update-item">⚠️ Probleme de developpement</div>
+          <div class="update-item">🗺️ Level design en cours</div>
+          <div class="update-item">☠️ System de combat en cours</div>
+        </div>
+      </div>
+
+          <div class="project-card" style="animation-delay: 1.6s;">
+        <div class="project-header">
+          <div class="project-title">Jumpy-Land </div>
+          <span class="project-status">🔴 EN CONCEPTION </span>
+        </div>
+        <div class="project-image">
+          <img src="placeholder.jpg" alt="Preview du projet">
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: 5%"></div>
+        </div>
+        <div class="project-tech">
+          <span class="tech-badge">Unity</span>
+          <span class="tech-badge">C#</span>
+          <span class="tech-badge">SketchFab</span>
+        </div>
+        <div class="project-updates">
+          <div class="update-item">⚠️ CDC EN COURS DE CREATION ⚠️ </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <script>
+    // Dès que la page est entièrement chargée, on lance la disparition du loader
+    window.addEventListener('load', function() {
+      const loader = document.getElementById('loader');
+      loader.classList.add('fade-out');
+      setTimeout(function() {
+        loader.style.display = 'none';
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
